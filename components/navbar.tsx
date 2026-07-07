@@ -70,7 +70,7 @@ export default function Navbar() {
       <div className={`fixed inset-0 bg-black z-40 flex flex-col justify-start pt-28 px-8 transition-transform duration-300 ease-in-out md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col gap-6 text-2xl font-bold tracking-wide">
           <a href="#timeline" onClick={(e) => handleScrollToSection(e, 'timeline')} className="cursor-pointer hover:text-emerald-400">Timeline</a>
-          <Link href="/discord" onClick={() => setIsOpen(false)} className="hover:text-emerald-400">Discord</Link>
+          <Link href="https://discord.gg/QaGCGb3Z2" target="_blank" onClick={() => setIsOpen(false)} className="hover:text-emerald-400">Discord</Link>
           <a href="#faq" onClick={(e) => handleScrollToSection(e, 'faq')} className="cursor-pointer hover:text-emerald-400">FAQ</a>
           
           <hr className="border-neutral-800 my-4" />
