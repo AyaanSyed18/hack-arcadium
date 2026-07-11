@@ -254,11 +254,7 @@ export default function RegisterPage() {
             <CheckIcon />
           </div>
           <h2 className="text-3xl font-bold text-white mb-3">You're registered!</h2>
-          <p className="text-[#8e8ea0] mb-6">Welcome to Arcadium. Your registration ID is below.</p>
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-5 mb-8">
-            <p className="text-xs text-[#8e8ea0] uppercase tracking-widest mb-2">Registration ID</p>
-            <code className="text-emerald-400 text-lg font-mono break-all">{registrationId}</code>
-          </div>
+          <p className="text-[#8e8ea0] mb-8">Welcome to Arcadium. Check your WhatsApp messages for your server invite link!</p>
           <button
             onClick={() => window.location.href = '/'}
             className="bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-colors"
