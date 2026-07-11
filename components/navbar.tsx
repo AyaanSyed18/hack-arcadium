@@ -41,10 +41,8 @@ export default function Navbar() {
         <a href="#timeline" onClick={(e) => handleScrollToSection(e, 'timeline')} className="cursor-pointer hover:text-emerald-400 transition-colors">
           Timeline
         </a>
-        <a href="#faq" onClick={(e) => handleScrollToSection(e, 'faq')} className="cursor-pointer hover:text-emerald-400 transition-colors">
-          FAQ
-        </a>
-        
+        <Link href="https://discord.gg/QaGCGb3Z2" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400">Discord</Link>
+        <Link href="#faq" onClick={(e) => handleScrollToSection(e, 'faq')} className="hover:text-emerald-400">FAQ</Link>
         {/* Divider */}
         <span className="text-white opacity-20 text-xl font-light select-none">|</span>
 

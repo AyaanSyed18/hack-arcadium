@@ -7,23 +7,31 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "start-wa-bot": "tsx scripts/whatsapp-bot.ts",
+    "start-discord-bot": "tsx scripts/discord-bot.ts"
   },
   "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^17.4.2",
     "lucide-react": "^1.23.0",
     "mongoose": "^9.7.3",
     "next": "16.2.10",
+    "qrcode-terminal": "^0.12.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "whatsapp-web.js": "^1.23.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/qrcode-terminal": "^0.12.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
+    "tsx": "^4.7.1",
     "typescript": "^5"
   }
 }

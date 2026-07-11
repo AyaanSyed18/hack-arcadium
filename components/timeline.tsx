@@ -2,42 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 
-const initialTimelineData = [
-  {
-    id: 1,
-    dateStr: 'July 6',
-    date: new Date('2026-07-06T00:00:00'),
-    title: 'Registration Opens',
-    description: 'Secure your spot in the digital arena. Teams of up to 4.',
-    status: 'upcoming',
-  },
-  {
-    id: 2,
-    dateStr: 'July 16',
-    date: new Date('2026-07-16T00:00:00'),
-    title: 'The Hack Begins',
-    description: 'Virtual opening ceremony, team formation, and hacking commences.',
-    status: 'upcoming',
-  },
-  {
-    id: 3,
-    dateStr: 'July 23',
-    date: new Date('2026-07-23T00:00:00'),
-    title: 'Submission Deadline',
-    description: 'Devpost submissions close. Code freeze initiated.',
-    status: 'upcoming',
-  },
-  {
-    id: 4,
-    dateStr: 'July 30',
-    date: new Date('2026-07-30T00:00:00'),
-    title: 'Winners Announced',
-    description: '',
-    status: 'upcoming',
-  },
-];
+// Initial data moved to database
 
-export default function Timeline() {
+export default function Timeline({ initialTimelineData }: { initialTimelineData: any[] }) {
   const [timelineData, setTimelineData] = useState(initialTimelineData);
   const [desktopProgress, setDesktopProgress] = useState(0);
   const [mobileProgress, setMobileProgress] = useState<number[]>([0, 0, 0, 0]);
@@ -58,9 +25,11 @@ export default function Timeline() {
     }
 
     const updatedData = initialTimelineData.map((item, index) => {
-      if (index < activeIndex) return { ...item, status: 'completed' };
-      if (index === activeIndex) return { ...item, status: 'active' };
-      return { ...item, status: 'upcoming' };
+      // Ensure date is a Date object (if it came from JSON serialization)
+      const dateObj = new Date(item.date);
+      if (index < activeIndex) return { ...item, date: dateObj, status: 'completed' };
+      if (index === activeIndex) return { ...item, date: dateObj, status: 'active' };
+      return { ...item, date: dateObj, status: 'upcoming' };
     });
 
     setTimelineData(updatedData);
@@ -76,8 +45,10 @@ export default function Timeline() {
     } else {
       const startNode = initialTimelineData[activeIndex];
       const endNode = initialTimelineData[activeIndex + 1];
-      const timePassed = now.getTime() - startNode.date.getTime();
-      const totalTime = endNode.date.getTime() - startNode.date.getTime();
+      const startTime = new Date(startNode.date).getTime();
+      const endTime = new Date(endNode.date).getTime();
+      const timePassed = now.getTime() - startTime;
+      const totalTime = endTime - startTime;
       const ratio = Math.max(0, Math.min(1, timePassed / totalTime));
 
       const nodePercentage = 100 / initialTimelineData.length;
