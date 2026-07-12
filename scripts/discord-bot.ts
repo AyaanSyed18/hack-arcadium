@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, Events } from 'discord.js';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import Registration from '../models/Registration';
 
 // Load env variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
@@ -16,15 +17,6 @@ if (!MONGODB_URI || !DISCORD_BOT_TOKEN || !DISCORD_GUILD_ID) {
   console.error("Ensure MONGODB_URI, DISCORD_BOT_TOKEN, and DISCORD_GUILD_ID are defined.");
   process.exit(1);
 }
-
-// Define lightweight Registration schema locally to keep the script standalone
-const RegistrationSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  discord: { type: String, required: true },
-  discordOnboarded: { type: Boolean, default: false },
-});
-
-const Registration = mongoose.models.Registration || mongoose.model('Registration', RegistrationSchema);
 
 async function connectDB() {
   if (mongoose.connection.readyState === 0) {

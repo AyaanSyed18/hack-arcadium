@@ -3,6 +3,7 @@ import qrcode from 'qrcode-terminal';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import Registration from '../models/Registration';
 
 // Load env variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
@@ -12,15 +13,6 @@ if (!MONGODB_URI) {
   console.error("Error: MONGODB_URI is not defined in .env.local");
   process.exit(1);
 }
-
-// Define lightweight Registration schema locally to keep the script standalone
-const RegistrationSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  phone: { type: String, required: true },
-  whatsappInviteSent: { type: Boolean, default: false },
-});
-
-const Registration = mongoose.models.Registration || mongoose.model('Registration', RegistrationSchema);
 
 async function connectDB() {
   if (mongoose.connection.readyState === 0) {
@@ -64,6 +56,16 @@ client.on('ready', () => {
   checkAndSendInvites(); // run immediately on startup
 });
 
+client.on('disconnected', (reason) => {
+  console.error('WhatsApp Client was disconnected:', reason);
+  process.exit(1);
+});
+
+client.on('auth_failure', (msg) => {
+  console.error('WhatsApp Authentication failure:', msg);
+  process.exit(1);
+});
+
 async function checkAndSendInvites() {
   try {
     await connectDB();
@@ -89,8 +91,18 @@ async function checkAndSendInvites() {
         reg.whatsappInviteSent = true;
         await reg.save();
         console.log(`✅ Successfully sent WhatsApp invite to ${reg.name}!`);
-      } catch (err) {
+      } catch (err: any) {
         console.error(`❌ Failed to send message to ${reg.name}:`, err);
+        const errMsg = err?.message || '';
+        if (
+          errMsg.includes('detached') || 
+          errMsg.includes('closed') || 
+          errMsg.includes('Protocol error') || 
+          errMsg.includes('Navigation failed')
+        ) {
+          console.error('Critical WhatsApp browser/client error detected. Exiting process for PM2 to auto-restart...');
+          process.exit(1);
+        }
       }
     }
   } catch (error) {

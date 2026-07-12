@@ -1,0 +1,48 @@
+services:
+  # Next.js web application
+  - type: web
+    name: arcadium-web
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: MONGODB_URI
+        sync: true
+      - key: OPENROUTER_API_KEY
+        sync: true
+      - key: DISCORD_CLIENT_ID
+        sync: true
+
+  # WhatsApp Bot Background Worker
+  - type: worker
+    name: arcadium-whatsapp-bot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: npx tsx scripts/whatsapp-bot.ts
+    plan: starter
+    disk:
+      name: wwebjs-auth-disk
+      mountPath: /app/.wwebjs_auth
+      sizeGB: 1
+    envVars:
+      - key: MONGODB_URI
+        sync: true
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: "true"
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/chromium
+
+  # Discord Bot Background Worker
+  - type: worker
+    name: arcadium-discord-bot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: npx tsx scripts/discord-bot.ts
+    plan: starter
+    envVars:
+      - key: MONGODB_URI
+        sync: true
+      - key: DISCORD_BOT_TOKEN
+        sync: true
+      - key: DISCORD_GUILD_ID
+        sync: true
