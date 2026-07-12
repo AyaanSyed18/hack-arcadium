@@ -12,18 +12,6 @@ module.exports = {
       }
     },
     {
-      name: 'arcadium-whatsapp-bot',
-      script: 'npx',
-      args: 'tsx scripts/whatsapp-bot.ts',
-      autorestart: true,
-      watch: false,
-      max_size: '10M',
-      retain: '5',
-      env: {
-        NODE_ENV: 'development'
-      }
-    },
-    {
       name: 'arcadium-discord-bot',
       script: 'npx',
       args: 'tsx scripts/discord-bot.ts',

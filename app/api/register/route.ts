@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Registration from '@/models/Registration';
 import { rateLimit } from '@/lib/rate-limit';
+import { sendWhatsAppMessage } from '@/lib/whatsapp';
 
 export async function POST(req: Request) {
   try {
@@ -37,6 +38,20 @@ export async function POST(req: Request) {
     }
 
     const newRegistration = await Registration.create(data);
+
+    // Asynchronously send WhatsApp invite message without blocking the API response
+    sendWhatsAppMessage(newRegistration.phone, newRegistration.name)
+      .then(async (success) => {
+        if (success) {
+          await Registration.updateOne({ _id: newRegistration._id }, { whatsappInviteSent: true });
+          console.log(`✅ Serverless WhatsApp invite sent and tracked for ${newRegistration.name}`);
+        } else {
+          console.warn(`⚠️ Failed to send WhatsApp invite to ${newRegistration.name} via API`);
+        }
+      })
+      .catch((err) => {
+        console.error(`❌ Error in async WhatsApp invite dispatch:`, err);
+      });
 
     return NextResponse.json({ 
       success: true, 
