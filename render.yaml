@@ -17,4 +17,8 @@ services:
       - key: WHATSAPP_INSTANCE_ID
         sync: false
       - key: WHATSAPP_API_PROVIDER
-        value: "ultramsg" # Default provider
+        value: "ultramsg"
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+      - key: DISCORD_GUILD_ID
+        sync: false
