@@ -7,11 +7,11 @@ services:
     plan: free
     envVars:
       - key: MONGODB_URI
-        sync: true
+        sync: false
       - key: OPENROUTER_API_KEY
-        sync: true
+        sync: false
       - key: DISCORD_CLIENT_ID
-        sync: true
+        sync: false
 
   # WhatsApp Bot Background Worker
   - type: worker
@@ -26,7 +26,7 @@ services:
       sizeGB: 1
     envVars:
       - key: MONGODB_URI
-        sync: true
+        sync: false
       - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
         value: "true"
       - key: PUPPETEER_EXECUTABLE_PATH
@@ -41,8 +41,8 @@ services:
     plan: starter
     envVars:
       - key: MONGODB_URI
-        sync: true
+        sync: false
       - key: DISCORD_BOT_TOKEN
-        sync: true
+        sync: false
       - key: DISCORD_GUILD_ID
-        sync: true
+        sync: false
